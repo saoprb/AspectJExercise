@@ -1,3 +1,5 @@
+package com.sao.aspectj.exercise.pojo;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
