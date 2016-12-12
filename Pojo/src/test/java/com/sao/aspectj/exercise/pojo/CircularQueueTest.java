@@ -14,7 +14,7 @@ public class CircularQueueTest {
 
     @Before
     public void beforeTest() {
-        circularQueue = new CircularQueue<Integer>(10);
+        circularQueue = new CircularQueue(new Integer(0), 10);
         Assert.assertNotNull(circularQueue);
     }
 
@@ -43,7 +43,7 @@ public class CircularQueueTest {
     public void testQueueOrder() throws ExceptionQueueEmpty, ExceptionQueueFull {
         clearAndPopulateQueue(new int[]{ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 });
 
-        for (int i = 10; i <= 100; i++) {
+        for (int i = 10; i <= 100; i+=10) {
             Assert.assertEquals(new Integer(i), circularQueue.remove());
         }
     }

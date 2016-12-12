@@ -1,42 +1,49 @@
 package com.sao.aspectj.exercise.pojo;
 
+import java.lang.reflect.Array;
+
 /**
  * Created by saoprb on 12/12/2016.
  */
 public class CircularQueue<T> {
 
     final private int bufferSize;
-    private int count;
+    private int nextAdd;
+    private int nextRemove;
+    private T[] queue;
 
-    public CircularQueue(int bufferSize) {
+    public CircularQueue(T t, int bufferSize) {
         this.bufferSize = bufferSize;
-        count = 0;
+        queue = (T[]) Array.newInstance(t.getClass(), bufferSize);
+        nextAdd = 0;
+        nextRemove = 0;
     }
 
     public void add(T t) throws ExceptionQueueFull {
-        if (count > bufferSize)
+        if (isFull())
             throw new ExceptionQueueFull();
-        count++;
+        queue[nextAdd % bufferSize] = t;
+        ++nextAdd;
     }
 
     public T remove() throws ExceptionQueueEmpty {
-        if (count <= 0)
+        if (isEmpty())
             throw new ExceptionQueueEmpty();
 
-        count--;
-        T t = null;
-        return t;
+        T removed = queue[nextRemove % bufferSize];
+        ++nextRemove;
+        return removed;
     }
 
     public boolean isFull() {
-      return count == bufferSize;
+      return (nextAdd - nextRemove) == bufferSize;
     }
 
     public boolean isEmpty() {
-        return count <= 0;
+        return nextAdd - nextRemove == 0;
     }
 
     public void clear() {
-        count = 0;
+        nextAdd = nextRemove = 0;
     }
 }
