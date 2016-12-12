@@ -10,7 +10,7 @@ import java.util.Random;
  * Created by saoprb on 12/12/2016.
  */
 public class CircularQueueTest {
-    final private CircularQueue<Integer> circularQueue;
+    private CircularQueue<Integer> circularQueue;
 
     @Before
     public void beforeTest() {
@@ -18,8 +18,8 @@ public class CircularQueueTest {
         Assert.assertNotNull(circularQueue);
     }
 
-    @Test(expected = com.sao.aspectj.exercise.pojo.ExceptionQueueFull)
-    public void testAddingToQueueUntilFull() {
+    @Test(expected = com.sao.aspectj.exercise.pojo.ExceptionQueueFull.class)
+    public void testAddingToQueueUntilFull() throws ExceptionQueueEmpty, ExceptionQueueFull {
         Random random = new Random();
 
         circularQueue.clear();
@@ -29,9 +29,9 @@ public class CircularQueueTest {
         }
     }
 
-    @Test(expected = com.sao.aspectj.exercise.pojo.ExceptionQueueEmpty)
-    public void testRemovingFromQueueUntilEmpty() {
-        clearAndPopulateQueue(new int[]{ 10, 20, 30 });
+    @Test(expected = com.sao.aspectj.exercise.pojo.ExceptionQueueEmpty.class)
+    public void testRemovingFromQueueUntilEmpty() throws ExceptionQueueEmpty, ExceptionQueueFull {
+        clearAndPopulateQueue(new int[]{ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 });
 
         while (true) {
             Integer item = circularQueue.remove();
@@ -40,16 +40,16 @@ public class CircularQueueTest {
     }
 
     @Test
-    public void testQueueOrder() {
-        clearAndPopulateQueue(new int[]{ 10, 20, 30 });
+    public void testQueueOrder() throws ExceptionQueueEmpty, ExceptionQueueFull {
+        clearAndPopulateQueue(new int[]{ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 });
 
-        Assert.assertEquals(new Integer(10).equals(circularQueue.remove()));
-        Assert.assertEquals(new Integer(20).equals(circularQueue.remove()));
-        Assert.assertEquals(new Integer(30).equals(circularQueue.remove()));
+        for (int i = 10; i <= 100; i++) {
+            Assert.assertEquals(new Integer(i), circularQueue.remove());
+        }
     }
 
     @Test
-    public void testQueueIsNotEmpty() {
+    public void testQueueIsNotEmpty() throws ExceptionQueueFull {
         circularQueue.clear();
         Assert.assertFalse(circularQueue.isFull());
         Assert.assertTrue(circularQueue.isEmpty());
@@ -60,15 +60,15 @@ public class CircularQueueTest {
     }
 
     @Test
-    public void testQueueIsFull() {
+    public void testQueueIsFull() throws ExceptionQueueFull {
         clearAndPopulateQueue(new int[]{ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 });
 
         Assert.assertTrue(circularQueue.isFull());
         Assert.assertFalse(circularQueue.isEmpty());
     }
 
-    @Test(expected = com.sao.aspectj.exercise.pojo.ExceptionQueueEmpty)
-    public void testQueueIsEmpty() {
+    @Test(expected = com.sao.aspectj.exercise.pojo.ExceptionQueueEmpty.class)
+    public void testQueueIsEmpty() throws ExceptionQueueEmpty {
         circularQueue.clear();
         Assert.assertFalse(circularQueue.isFull());
         Assert.assertTrue(circularQueue.isEmpty());
@@ -77,10 +77,10 @@ public class CircularQueueTest {
     }
 
     @Test
-    public void testQueueIsCircular() {
+    public void testQueueIsCircular() throws ExceptionQueueEmpty, ExceptionQueueFull {
         testQueueIsFull();
 
-        Assert.assertEquals(new Integer(10).equals(circularQueue.remove()));
+        Assert.assertEquals(new Integer(10), circularQueue.remove());
 
         circularQueue.add(new Integer(110));
 
@@ -88,7 +88,7 @@ public class CircularQueueTest {
         Assert.assertFalse(circularQueue.isEmpty());
     }
 
-    private void clearAndPopulateQueue(int[] queueData) {
+    private void clearAndPopulateQueue(int[] queueData) throws ExceptionQueueFull {
         circularQueue.clear();
 
         for (int data : queueData) {
