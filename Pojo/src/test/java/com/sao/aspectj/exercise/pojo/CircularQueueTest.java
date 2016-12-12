@@ -25,7 +25,7 @@ public class CircularQueueTest {
         circularQueue.clear();
 
         while (true) {
-            circularQueue.add(new Integer(random.nextInt(20)));
+            addItem(new Integer(random.nextInt(20)));
         }
     }
 
@@ -34,8 +34,7 @@ public class CircularQueueTest {
         clearAndPopulateQueue(new int[]{ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 });
 
         while (true) {
-            Integer item = circularQueue.remove();
-            System.out.format("Item removed from queue: %s%n", item);
+            removeItem();
         }
     }
 
@@ -44,7 +43,7 @@ public class CircularQueueTest {
         clearAndPopulateQueue(new int[]{ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 });
 
         for (int i = 10; i <= 100; i+=10) {
-            Assert.assertEquals(new Integer(i), circularQueue.remove());
+            Assert.assertEquals(new Integer(i), removeItem());
         }
     }
 
@@ -54,7 +53,7 @@ public class CircularQueueTest {
         Assert.assertFalse(circularQueue.isFull());
         Assert.assertTrue(circularQueue.isEmpty());
 
-        circularQueue.add(new Integer(1));
+        addItem(new Integer(1));
         Assert.assertFalse(circularQueue.isFull());
         Assert.assertFalse(circularQueue.isEmpty());
     }
@@ -80,9 +79,9 @@ public class CircularQueueTest {
     public void testQueueIsCircular() throws ExceptionQueueEmpty, ExceptionQueueFull {
         testQueueIsFull();
 
-        Assert.assertEquals(new Integer(10), circularQueue.remove());
+        Assert.assertEquals(new Integer(10), removeItem());
 
-        circularQueue.add(new Integer(110));
+        addItem(new Integer(110));
 
         Assert.assertTrue(circularQueue.isFull());
         Assert.assertFalse(circularQueue.isEmpty());
@@ -92,7 +91,18 @@ public class CircularQueueTest {
         circularQueue.clear();
 
         for (int data : queueData) {
-            circularQueue.add(new Integer(data));
+            addItem(new Integer(data));
         }
+    }
+
+    private Integer removeItem() throws ExceptionQueueEmpty {
+        Integer item = circularQueue.remove();
+        System.out.format("Item removed from queue: %s%n", item);
+        return item;
+    }
+
+    private void addItem(Integer item) throws ExceptionQueueFull {
+        circularQueue.add(item);
+        System.out.format("Item added to queue: %s%n", item);
     }
 }

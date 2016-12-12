@@ -10,6 +10,7 @@ public class CircularQueue<T> {
     final private int bufferSize;
     private int nextAdd;
     private int nextRemove;
+    private int count;
     private T[] queue;
 
     public CircularQueue(T t, int bufferSize) {
@@ -17,33 +18,36 @@ public class CircularQueue<T> {
         queue = (T[]) Array.newInstance(t.getClass(), bufferSize);
         nextAdd = 0;
         nextRemove = 0;
+        count = 0;
     }
 
     public void add(T t) throws ExceptionQueueFull {
         if (isFull())
             throw new ExceptionQueueFull();
-        queue[nextAdd % bufferSize] = t;
-        ++nextAdd;
+        queue[nextAdd] = t;
+        nextAdd = ++nextAdd % bufferSize;
+        count++;
     }
 
     public T remove() throws ExceptionQueueEmpty {
         if (isEmpty())
             throw new ExceptionQueueEmpty();
 
-        T removed = queue[nextRemove % bufferSize];
-        ++nextRemove;
+        T removed = queue[nextRemove];
+        nextRemove = ++nextRemove % bufferSize;
+        count--;
         return removed;
     }
 
     public boolean isFull() {
-      return (nextAdd - nextRemove) == bufferSize;
+      return count == bufferSize;
     }
 
     public boolean isEmpty() {
-        return nextAdd - nextRemove == 0;
+        return count == 0;
     }
 
     public void clear() {
-        nextAdd = nextRemove = 0;
+        nextAdd = nextRemove = count = 0;
     }
 }
