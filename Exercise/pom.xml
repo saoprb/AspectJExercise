@@ -30,7 +30,7 @@
 
     <profiles>
         <profile>
-            <id>buildJar</id>
+            <id>build</id>
             <build>
                 <defaultGoal>install</defaultGoal>
                 <plugins>

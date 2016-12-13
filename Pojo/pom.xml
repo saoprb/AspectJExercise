@@ -14,4 +14,46 @@
 
     <artifactId>pojo</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.8.9</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sao.aspectj</groupId>
+            <artifactId>aspect</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>aspectj-maven-plugin</artifactId>
+                <version>1.9</version>
+                <configuration>
+                    <aspectLibraries>
+                        <aspectLibrary>
+                            <groupId>com.sao.aspectj</groupId>
+                            <artifactId>aspect</artifactId>
+                        </aspectLibrary>
+                    </aspectLibraries>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <complianceLevel>${java.version}</complianceLevel>
+                    <verbose>true</verbose>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
