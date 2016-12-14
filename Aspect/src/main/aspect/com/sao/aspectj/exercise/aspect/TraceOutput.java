@@ -37,6 +37,6 @@ public class TraceOutput {
         }
         String trimmed = stringBuffer.toString();
         trimmed = trimmed.length() > 0 ? trimmed.substring(0, trimmed.lastIndexOf(", ")) : "nil";
-        System.out.format("%s: [%s] after %s execution%n", joinPoint.toString(), trimmed, methodName);
+        System.out.format("%s: [%s] %s execution%n", joinPoint.toString(), trimmed, methodName);
     }
 }
