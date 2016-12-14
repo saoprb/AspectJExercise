@@ -2,39 +2,49 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
-    <parent>
-        <artifactId>exercise</artifactId>
-        <groupId>com.sao.aspectj</groupId>
-        <version>${project.version}</version>
-        <relativePath>../Exercise/pom.xml</relativePath>
-    </parent>
-
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>pojo</artifactId>
+    <properties>
+        <project.version>1.0-SNAPSHOT</project.version>
+        <java.version>1.8</java.version>
+        <java.encoding>UTF-8</java.encoding>
+        <junit.version>4.12</junit.version>
+    </properties>
+
+    <groupId>com.sao.aspectj.exercise</groupId>
+    <artifactId>simplepojoaspectj</artifactId>
+    <version>1.0-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
-            <groupId>com.sao.aspectj</groupId>
-            <artifactId>aspect</artifactId>
-            <version>${project.version}</version>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.8.9</version>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.0</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${java.encoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>aspectj-maven-plugin</artifactId>
                 <version>1.9</version>
                 <configuration>
-                    <aspectLibraries>
-                        <aspectLibrary>
-                            <groupId>com.sao.aspectj</groupId>
-                            <artifactId>aspect</artifactId>
-                        </aspectLibrary>
-                    </aspectLibraries>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                     <complianceLevel>${java.version}</complianceLevel>
@@ -42,7 +52,6 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <phase>process-sources</phase>
                         <goals>
                             <goal>compile</goal>
                             <goal>test-compile</goal>
@@ -52,5 +61,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

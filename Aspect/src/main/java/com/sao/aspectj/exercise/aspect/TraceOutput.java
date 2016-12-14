@@ -1,5 +1,6 @@
 package com.sao.aspectj.exercise.aspect;
 
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 
 /**
@@ -9,45 +10,38 @@ import org.aspectj.lang.annotation.*;
 @Aspect
 public class TraceOutput {
 
-    @Pointcut("execution(* *CircularQueueTest.*(..))")
-    private void circularQueueMethodCallTest() {
+    @Pointcut("@annotation(traceAnnotation)")
+    private void traceExecution(TraceAnnotation traceAnnotation) {
 
     }
 
-    @Pointcut("execution(* *CircularQueueTest.*(..) throws *ExceptionQueueEmpty)")
-    private void circularQueueMethodCallTestThrowsEmpty() {
+    @Pointcut("execution(* *(..))")
+    private void genericExecution() {
 
     }
 
-    @Pointcut("execution(* *CircularQueueTest.*(..) throws *ExceptionQueueFull)")
-    private void circularQueueMethodCallTestThrowsFull() {
+    @Pointcut("execution(* *(..) throws *.*)")
+    private void genericExecutionAndThrows() {
 
     }
 
-    @Before("circularQueueMethodCallTest()")
-    public void beforeCircularQueueMethodCallTest() {
-        System.out.println("before circularQueueMethodCallTest execution");
+    @Before("traceExecution(traceAnnotation) && genericExecution()")
+    public void beforeTraceExecution(JoinPoint joinPoint, TraceAnnotation traceAnnotation) {
+        System.out.println("before traceExecution execution");
     }
 
-    @After("circularQueueMethodCallTest() " +
-            "|| circularQueueMethodCallTestThrowsEmpty()" +
-            "|| circularQueueMethodCallTestThrowsFull()")
-    public void afterCircularQueueMethodCallTest() {
-        System.out.println("after circularQueueMethodCallTest execution");
+    @Before("traceExecution(traceAnnotation) && genericExecution()")
+    public void afterTraceExecution(JoinPoint joinPoint, TraceAnnotation traceAnnotation) {
+        System.out.println("after traceExecution execution");
     }
 
-    @Pointcut("execution(* *CircularQueue.*(..))")
-    public void circularQueueMethodCall() {
-
+    @Before("traceExecution(traceAnnotation) && genericExecutionAndThrows()")
+    public void beforeTraceExecutionWithThrow(JoinPoint joinPoint, TraceAnnotation traceAnnotation) {
+        System.out.println("before traceExecution execution");
     }
 
-    @Before("circularQueueMethodCall()")
-    public void beforeCircularQueueMethodCall() {
-        System.out.println("before circularQueueMethodCall execution");
-    }
-
-    @After("circularQueueMethodCall()")
-    public void afterCircularQueueMethodCall() {
-        System.out.println("after circularQueueMethodCall execution");
+    @Before("traceExecution(traceAnnotation) && genericExecutionAndThrows()")
+    public void afterTraceExecutionWithThrow(JoinPoint joinPoint, TraceAnnotation traceAnnotation) {
+        System.out.println("after traceExecution execution");
     }
 }
