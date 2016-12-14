@@ -20,7 +20,7 @@ public class TraceOutput {
 
     }
 
-    @Pointcut("execution(* *(..) throws *.*)")
+    @Pointcut("execution(* *(..) throws *)")
     private void genericExecutionAndThrows() {
 
     }
