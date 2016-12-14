@@ -20,11 +20,6 @@ public class TraceOutput {
 
     }
 
-    @Pointcut("execution(* *(..) throws *)")
-    private void genericExecutionAndThrows() {
-
-    }
-
     @Before("traceExecution(traceAnnotation) && genericExecution()")
     public void beforeTraceExecution(JoinPoint joinPoint, TraceAnnotation traceAnnotation) {
         logOutput(joinPoint, "beforeTraceExecution");
@@ -33,16 +28,6 @@ public class TraceOutput {
     @Before("traceExecution(traceAnnotation) && genericExecution()")
     public void afterTraceExecution(JoinPoint joinPoint, TraceAnnotation traceAnnotation) {
         logOutput(joinPoint, "afterTraceExecution");
-    }
-
-    @Before("traceExecution(traceAnnotation) && genericExecutionAndThrows()")
-    public void beforeTraceExecutionWithThrow(JoinPoint joinPoint, TraceAnnotation traceAnnotation) {
-        logOutput(joinPoint, "beforeTraceExecutionWithThrow");
-    }
-
-    @Before("traceExecution(traceAnnotation) && genericExecutionAndThrows()")
-    public void afterTraceExecutionWithThrow(JoinPoint joinPoint, TraceAnnotation traceAnnotation) {
-        logOutput(joinPoint, "afterTraceExecutionWithThrow");
     }
 
     private void logOutput(JoinPoint joinPoint, String methodName) {
