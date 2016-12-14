@@ -27,21 +27,31 @@ public class TraceOutput {
 
     @Before("traceExecution(traceAnnotation) && genericExecution()")
     public void beforeTraceExecution(JoinPoint joinPoint, TraceAnnotation traceAnnotation) {
-        System.out.println("before traceExecution execution");
+        logOutput(joinPoint, "beforeTraceExecution");
     }
 
     @Before("traceExecution(traceAnnotation) && genericExecution()")
     public void afterTraceExecution(JoinPoint joinPoint, TraceAnnotation traceAnnotation) {
-        System.out.println("after traceExecution execution");
+        logOutput(joinPoint, "afterTraceExecution");
     }
 
     @Before("traceExecution(traceAnnotation) && genericExecutionAndThrows()")
     public void beforeTraceExecutionWithThrow(JoinPoint joinPoint, TraceAnnotation traceAnnotation) {
-        System.out.println("before traceExecution execution");
+        logOutput(joinPoint, "beforeTraceExecutionWithThrow");
     }
 
     @Before("traceExecution(traceAnnotation) && genericExecutionAndThrows()")
     public void afterTraceExecutionWithThrow(JoinPoint joinPoint, TraceAnnotation traceAnnotation) {
-        System.out.println("after traceExecution execution");
+        logOutput(joinPoint, "afterTraceExecutionWithThrow");
+    }
+
+    private void logOutput(JoinPoint joinPoint, String methodName) {
+        StringBuffer stringBuffer = new StringBuffer();
+        for (Object arg : joinPoint.getArgs()) {
+            stringBuffer.append(arg.toString()).append(", ");
+        }
+        String trimmed = stringBuffer.toString();
+        trimmed = trimmed.length() > 0 ? trimmed.substring(0, trimmed.lastIndexOf(", ")) : "nil";
+        System.out.format("%s: [%s] after %s execution%n", joinPoint.toString(), trimmed, methodName);
     }
 }
